@@ -10,11 +10,20 @@ import org.springframework.stereotype.Repository;
 public class PlaceDao extends SqlSessionDaoSupport implements PlaceDaoInter{
 
 	@Override
+<<<<<<< HEAD
 	public List<PlaceDto> list(String place_addr,String place_name) {
 		// TODO Auto-generated method stub
 		HashMap<String , String> map=new HashMap<String, String>();
 		map.put("place_addr",place_addr);
 		map.put("place_name",place_name);
+=======
+	public List<PlaceDto> list(String place_addr,String place_name,int pageNum) {
+		// TODO Auto-generated method stub
+		HashMap<String , Object> map=new HashMap<String, Object>();
+		map.put("place_addr",place_addr);
+		map.put("place_name",place_name);
+		map.put("pageNum",pageNum);
+>>>>>>> Match
 		return getSqlSession().selectList("selectAllOfPlace",map);
 	}
 
@@ -33,6 +42,21 @@ public class PlaceDao extends SqlSessionDaoSupport implements PlaceDaoInter{
 		map.put("res_type",dto.getRes_type());
 		return getSqlSession().selectList("getResTimeOfPlace", map);
 	}
+<<<<<<< HEAD
+=======
+
+	@Override
+	public void addRes(ReservationDto dto) {
+		// TODO Auto-generated method stub
+		getSqlSession().insert("addReservation", dto);
+	}
+
+	@Override
+	public void updateRes(ReservationDto dto) {
+		// TODO Auto-generated method stub
+		getSqlSession().update("updateReservation", dto);
+	}
+>>>>>>> Match
 	
 	
 

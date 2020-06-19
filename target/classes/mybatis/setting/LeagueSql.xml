@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="league">
+	<select id="selectOfLeagueRanking" resultType="lrdto">
+		select * from league_team
+	</select>
+	<select id="getLeagueMaxId" resultType="int">
+		select max(league_id) from league
+	</select>
+	<insert id="insertOfLeaguePlan" parameterType="rounddto">
+		INSERT INTO league_round (round_cnt, round_date, league_id, league_team1, league_team2, league_team1goal, league_team2goal, round_status) VALUES (#{round_cnt}, #{round_date}, #{league_id}, #{league_team1}, #{league_team2}, 0, 0, 'N');
+	</insert>
+</mapper>

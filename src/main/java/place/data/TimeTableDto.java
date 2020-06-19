@@ -2,10 +2,24 @@ package place.data;
 
 public class TimeTableDto {
 	private int place_id;
-	private String time_val;
-	private int time_id;
-	private String res_time;
-	private String res_type;
+	private String time_val;//시간*~* 표시
+	private int time_id;//시간 고유값
+	private String res_time;//예약 경기 시간
+	private String res_type;//개인 팀 여부
+	private int res_team1;
+	private int res_team2;
+	public int getRes_team1() {
+		return res_team1;
+	}
+	public void setRes_team1(int res_team1) {
+		this.res_team1 = res_team1;
+	}
+	public int getRes_team2() {
+		return res_team2;
+	}
+	public void setRes_team2(int res_team2) {
+		this.res_team2 = res_team2;
+	}
 	public String getRes_type() {
 		return res_type;
 	}

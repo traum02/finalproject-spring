@@ -42,11 +42,22 @@ public class PlaceDao extends SqlSessionDaoSupport implements PlaceDaoInter{
 	}
 
 	@Override
-	public void updateRes(ReservationDto dto) {
+	public void updateResHome(ReservationDto dto) {
 		// TODO Auto-generated method stub
-		getSqlSession().update("updateReservation", dto);
+		getSqlSession().update("updateReservationOfHome", dto);
 	}
-	
+	@Override
+	public void updateResAway(ReservationDto dto) {
+		// TODO Auto-generated method stub
+		getSqlSession().update("updateReservationOfAway", dto);
+	}
+
+	@Override
+	public ReservationDto getOneRes(ReservationDto dto) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne("getOneRes",dto);
+	}
+
 	
 
 }

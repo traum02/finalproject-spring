@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -20,22 +22,45 @@ public class LeagueController {
 	private LeagueDaoInter dao;
 	
 	@GetMapping("/leagueRanking")
-	public List<LeagueRankingDto> getDatas(){
-		return dao.getDatas();
+	public List<LeagueRankingDto> getDatas(@RequestParam(defaultValue = "5") int id){
+		return dao.getDatas(id);
 	}
 	
 	@GetMapping("/leaguePlan")
 	public List<LeagueRoundDto> getPlan(){
-		return null;
+		int id=dao.getLeagueMaxId();
+		return dao.getPlan(id);
 	}
+	
+	@GetMapping("/leagueName")
+	public LeagueDto getLeagueName(@RequestParam int pageNum){
+//		System.out.println(pageNum);
+		return dao.getLeagueName(pageNum);
+	}
+	
+	@GetMapping("/leagueDate")
+	public String getLeagueDate(@RequestParam int id,int pageNum){
+		return dao.getLeagueDate(id, pageNum);
+	}
+	
+	@PostMapping("/joinLeague")
+	public void joinLeague() {
+		LeagueRankingDto dto=new LeagueRankingDto();
+		dto.setLeague_team_id(11);
+		dto.setLeague_team_name("test2");
+		dto.setLeague_id(dao.getLeagueMaxId());
+//		System.out.println(dao.getLeagueMaxId());
+		dao.joinLeague(dto);
+	}
+	
 	
 	@PostMapping("/makeLeaguePlan")
 	public void makePlan() {
-		List<LeagueRankingDto> ranklist=dao.getDatas();
+		List<LeagueRankingDto> ranklist=dao.getDatas(dao.getLeagueMaxId());
 		
 		List<Object> teamList=new Vector<Object>();
 		for(int i=0;i<ranklist.size();i++) {
-			if(ranklist.get(i).getLeague_join()=='Y')
+//			if(ranklist.get(i).getLeague_id()==dao.getLeagueMaxId())
 				teamList.add(ranklist.get(i).getLeague_team_id());
 		}
 		

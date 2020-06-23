@@ -12,7 +12,7 @@ public class MakePlan {
 	public List<LeagueRoundDto> makePlan(List<LeagueRankingDto> dto,int maxId){
 		List<Object> teamList=new Vector<Object>();
 		for(int i=0;i<dto.size();i++) {
-			if(dto.get(i).getLeague_join()=='Y')
+//			if(dto.get(i).getLeague_join()=='Y')
 				teamList.add(dto.get(i).getLeague_team_id());
 		}
 		

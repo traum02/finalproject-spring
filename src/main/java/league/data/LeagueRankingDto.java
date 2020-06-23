@@ -4,7 +4,18 @@ public class LeagueRankingDto {
 	private int league_team_id;
 	private String league_team_name;
 	private int team_num;
-	private char league_join;
+	private int league_id;
+	private int team_win;
+	private int team_draw;
+	private int team_lose;
+	private int team_score;
+	
+	public int getTeam_score() {
+		return team_score;
+	}
+	public void setTeam_score(int team_score) {
+		this.team_score = team_score;
+	}
 	public int getLeague_team_id() {
 		return league_team_id;
 	}
@@ -23,11 +34,29 @@ public class LeagueRankingDto {
 	public void setTeam_num(int team_num) {
 		this.team_num = team_num;
 	}
-	public char getLeague_join() {
-		return league_join;
+	public int getLeague_id() {
+		return league_id;
 	}
-	public void setLeague_join(char league_join) {
-		this.league_join = league_join;
+	public void setLeague_id(int league_id) {
+		this.league_id = league_id;
+	}
+	public int getTeam_win() {
+		return team_win;
+	}
+	public void setTeam_win(int team_win) {
+		this.team_win = team_win;
+	}
+	public int getTeam_draw() {
+		return team_draw;
+	}
+	public void setTeam_draw(int team_draw) {
+		this.team_draw = team_draw;
+	}
+	public int getTeam_lose() {
+		return team_lose;
+	}
+	public void setTeam_lose(int team_lose) {
+		this.team_lose = team_lose;
 	}
 
 }

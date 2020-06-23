@@ -5,8 +5,9 @@
 		<typeAlias type="place.data.PlaceDto" alias="pdto"/>
 		<typeAlias type="place.data.ReservationDto" alias="resdto"/>
 		<typeAlias type="place.data.TimeTableDto" alias="ttdto"/>
-		<typeAlias type="league.data.LeagueRankingDto" alias="lrdto"/>
+		<typeAlias type="league.data.LeagueRankingDto" alias="rankdto"/>
 		<typeAlias type="league.data.LeagueRoundDto" alias="rounddto"/>
+		<typeAlias type="league.data.LeagueDto" alias="leaguedto"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mybatis/setting/PlaceSql.xml"/>

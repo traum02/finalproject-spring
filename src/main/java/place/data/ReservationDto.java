@@ -3,6 +3,8 @@ package place.data;
 public class ReservationDto {
 	private int res_id;
 	private String member_id;
+	private String home_member_id;
+	private String away_member_id;
 	private String place_id;
 	private String res_type;
 	private String res_team1;
@@ -13,6 +15,24 @@ public class ReservationDto {
 	private String res_etc;
 	private String selectTeam;
 	
+	public String getMember_id() {
+		return member_id;
+	}
+	public void setMember_id(String member_id) {
+		this.member_id = member_id;
+	}
+	public String getHome_member_id() {
+		return home_member_id;
+	}
+	public void setHome_member_id(String home_member_id) {
+		this.home_member_id = home_member_id;
+	}
+	public String getAway_member_id() {
+		return away_member_id;
+	}
+	public void setAway_member_id(String away_member_id) {
+		this.away_member_id = away_member_id;
+	}
 	public String getSelectTeam() {
 		return selectTeam;
 	}
@@ -24,12 +44,6 @@ public class ReservationDto {
 	}
 	public void setRes_id(int res_id) {
 		this.res_id = res_id;
-	}
-	public String getMember_id() {
-		return member_id;
-	}
-	public void setMember_id(String member_id) {
-		this.member_id = member_id;
 	}
 	public String getPlace_id() {
 		return place_id;

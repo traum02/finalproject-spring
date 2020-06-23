@@ -7,9 +7,24 @@ public class LeagueRoundDto {
 	private int league_id;
 	private int league_team1;
 	private int league_team2;
+	private String team1_name;
+	private String team2_name;
 	private int league_team1goal;
 	private int league_team2goal;
 	private char round_status;
+	
+	public String getTeam1_name() {
+		return team1_name;
+	}
+	public void setTeam1_name(String team1_name) {
+		this.team1_name = team1_name;
+	}
+	public String getTeam2_name() {
+		return team2_name;
+	}
+	public void setTeam2_name(String team2_name) {
+		this.team2_name = team2_name;
+	}
 	public int getRound_id() {
 		return round_id;
 	}

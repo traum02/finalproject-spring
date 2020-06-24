@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+	<select id="selectAllOfMember" resultType="mdto">
+		select * from member order by point asc
+	</select>
+	<insert id="insertOfMember" parameterType="mdto">
+		insert into member values (#{name},#{birth},#{id},#{pwd},#{email},#{gender},#{addr},#{phone},0,0,0,0,0)
+	</insert>
+	<delete id="deleteOfMember" parameterType="String">
+		delete from member where id=#{id}
+	</delete>
+
+	<select id="selectOneOfMember" parameterType="String" resultType="int">
+		select count(*) from member where id=#{id}
+	</select>
+	
+	
+	<select id="selectOneOfEmail" parameterType="String" resultType="int">
+		select count(*) from member where email=#{email}
+	</select>
+	
+	<select id="findOneOfPwd" parameterType="String" resultType="String">
+		select pwd from member where id=#{id}
+	</select>
+	
+	<select id="findOneOfId" parameterType="String" resultType="String">
+		select id from member where email=#{email}
+	</select>
+	
+	<select id="selectOneOfId" parameterType="String" resultType="int">
+		select count(*) from member where id=#{id}
+	</select>
+	
+	<select id="selectOneOfPwd" parameterType="HashMap" resultType="int">
+		select count(*) from member where id=#{id} and pwd=#{pwd}
+	</select>
+	
+	<select id="selectOneOfSearchBirth" parameterType="HashMap" resultType="int">
+		select count(*) from member where name=#{name} and birth=#{birth} 
+	</select>
+	
+	<select id="selectOneOfSearchEmail" parameterType="HashMap" resultType="int">
+		select count(*) from member where name=#{name} and email=#{email} 
+	</select>
+	
+	<select id="selectOneOfSearchName" parameterType="HashMap" resultType="int">
+		select count(*) from member where id=#{id} and name=#{name} 
+	</select>
+	
+	<select id="selectOneOfName" parameterType="String" resultType="int">
+		select count(*) from member where name=#{name}
+	</select>
+	
+	
+	<select id="selectDataOfMember" resultType="mdto">
+		select * from member where id=#{id}
+	</select>
+
+	<select id="findOfGrade" parameterType="String" resultType="int">
+		select grade from member where id=#{id}
+	</select>
+
+	<!-- 추가 -->
+	<select id="getMemberData" parameterType="String" resultType="mdto">
+		select * from member where id=#{id}
+	</select>
+	
+
+
+</mapper>

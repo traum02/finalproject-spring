@@ -56,8 +56,24 @@ public class PlaceDao extends SqlSessionDaoSupport implements PlaceDaoInter{
 		// TODO Auto-generated method stub
 		getSqlSession().update("updateReservation", dto);
 	}
+<<<<<<< Updated upstream
 >>>>>>> Match
 	
+=======
+
+	@Override
+	public ReservationDto getOneRes(ReservationDto dto) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne("getOneRes",dto);
+	}
+
+	@Override
+	public List<ReservationDto> getDatasForBanner() {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectList("selectForBanner");
+	}
+
+>>>>>>> Stashed changes
 	
 
 }

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="place">
+	<select id="selectAllOfPlace" parameterType="hashmap" resultType="pdto">
+<!-- 	select * from place where place_addr like #{place_addr} and place_name like #{place_name} -->
+		select * from place where place_addr like #{place_addr} and place_name like #{place_name} limit 0,#{pageNum}
+	</select>
+	<select id="selectOfPlace" parameterType="int" resultType="pdto">
+		select * from place where place_id=#{place_id}
+	</select>
+	<select id="getResTimeOfPlace" parameterType="hashmap" resultType="ttdto">
+<!-- 		SELECT p.place_id,t.time_val,t.time_id,t.res_time FROM place p JOIN (select pt.time_val, pt.place_id,pt.time_id,r.res_time from place_time pt left join reservation r on pt.time_id=r.time_id and  r.res_time=#{res_time} ) t ON p.place_id = t.place_id where p.place_id=#{place_id} order BY t.time_val; -->
+		SELECT * FROM place p JOIN (select pt.time_val, pt.place_id,pt.time_id,r.res_time,r.res_team1,r.res_team2,r.res_type from place_time pt left join reservation r on pt.time_id=r.time_id and  r.res_time=#{res_time} ) t ON p.place_id = t.place_id where p.place_id=#{place_id} order BY t.time_val;
+<!-- 		select * from place_time t left join (select * from reservation where res_time='20200609' and res_type=0 ) r on t.time_id=r.time_id where t.place_id=1 order by t.time_val; -->
+	</select>
+	<insert id="addReservation" parameterType="resdto">
+		INSERT INTO reservation (home_member_id,away_member_id, place_id, res_type, res_team1, res_team2, res_time, time_id, res_date, res_etc) VALUES (#{home_member_id},#{away_member_id}, #{place_id}, #{res_type}, #{res_team1}, #{res_team2}, #{res_time}, #{time_id}, NOW(), #{res_etc});
+	</insert>
+	<update id="updateReservationOfHome" parameterType="resdto">
+		update reservation set home_member_id=concat(home_member_id,#{home_member_id}), res_team1=res_team1+#{res_team1}, res_team2=res_team2+#{res_team2} where res_time=#{res_time} and time_id=#{time_id}
+	</update>
+	<update id="updateReservationOfAway" parameterType="resdto">
+		update reservation set away_member_id=concat(away_member_id,#{away_member_id}), res_team1=res_team1+#{res_team1}, res_team2=res_team2+#{res_team2} where res_time=#{res_time} and time_id=#{time_id}
+	</update>
+	<select id="getOneRes" parameterType="resdto" resultType="resdto">
+		select * from reservation where res_time=#{res_time} and time_id=#{time_id}
+	</select>
+	<select id="selectForBanner" resultType="resdto">
+		select r.*,p.place_name,p.place_addr,pt.time_val,p.place_max-res_team1-res_team2 as free from reservation r join place p on r.place_id=p.place_id and r.res_team1+r.res_team2!=p.place_max join place_time pt on r.time_id=pt.time_id where r.res_type=0 or (r.res_type=1 and (r.res_team1 !=1 or r.res_team2 !=1)) order by res_time,free limit 5
+	</select>
+</mapper>

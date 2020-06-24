@@ -7,10 +7,19 @@
 		<typeAlias type="place.data.TimeTableDto" alias="ttdto"/>
 		<typeAlias type="league.data.LeagueRankingDto" alias="lrdto"/>
 		<typeAlias type="league.data.LeagueRoundDto" alias="rounddto"/>
+<<<<<<< Updated upstream
+=======
+		<typeAlias type="league.data.LeagueDto" alias="leaguedto"/>
+		<typeAlias type="spring.project.work.MemberDto" alias="mdto"/>
+		<typeAlias type="spring.project.work.IboardDto" alias="ibdto"/>
+		
+>>>>>>> Stashed changes
 	</typeAliases>
 	<mappers>
 		<mapper resource="mybatis/setting/PlaceSql.xml"/>
 		<mapper resource="mybatis/setting/LeagueSql.xml"/>
+		<mapper resource="mybatis/setting/MemberSql.xml"/>
+		<mapper resource="mybatis/setting/IboardSql.xml"/>
 	</mappers>
 	
 </configuration>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iboard">
+	<insert id="insertOfIboard" parameterType="ibdto">
+		insert into iboard(member_id,iboard_title,iboard_content,iboard_date,iboard_viewcount,iboard_type,iboard_sec,iboard_secpwd,iboard_notice)
+		value(#{member_id},#{iboard_title},#{iboard_content},now(),#{iboard_viewcount},#{iboard_type},1,#{iboard_secpwd},#{iboard_notice})
+	</insert>
+	
+	<select id="selectAllOfIboard" resultType="ibdto" parameterType="int">
+		select * from iboard order by field(iboard_notice,'notice') desc, iboard_num asc limit #{start},10
+	</select>
+	<select id="searchOfIbaord" resultType="ibdto" parameterType="HashMap">
+		select * from iboard where ${option} like concat('%', #{keyword}, '%') limit #{start},10
+	</select>
+	<select id="totalCountOfIboard" resultType="int">
+		select count(*) from iboard
+	</select>
+	<select id="totalCountOfIboardSearch" resultType="int" parameterType="HashMap">
+		select count(*) from iboard where ${option} like concat('%', #{keyword}, '%')
+	</select>
+	<select id="selectOneOfIboard" parameterType="int" resultType="ibdto">
+		select * from iboard where iboard_num=#{iboard_num}
+	</select>
+	<delete id="deleteOfIboard" parameterType="int">
+	   delete from iboard where iboard_num=#{iboard_num}
+	</delete>
+	<select id="iboardSelectOneOfPwd" parameterType="HashMap" resultType="int">
+		select count(*) from iboard where iboard_num=#{iboard_num} and iboard_secpwd=#{iboard_secpwd}
+	</select>
+	
+	
+	
+</mapper>

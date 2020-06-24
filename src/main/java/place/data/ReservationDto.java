@@ -12,7 +12,56 @@ public class ReservationDto {
 	private String res_date;
 	private String res_etc;
 	private String selectTeam;
+	private String place_name;
+	private String place_addr;
+	private String time_val;
+	private String free;
 	
+<<<<<<< Updated upstream
+=======
+	public String getPlace_name() {
+		return place_name;
+	}
+	public void setPlace_name(String place_name) {
+		this.place_name = place_name;
+	}
+	public String getPlace_addr() {
+		return place_addr;
+	}
+	public void setPlace_addr(String place_addr) {
+		this.place_addr = place_addr;
+	}
+	public String getTime_val() {
+		return time_val;
+	}
+	public void setTime_val(String time_val) {
+		this.time_val = time_val;
+	}
+	public String getFree() {
+		return free;
+	}
+	public void setFree(String free) {
+		this.free = free;
+	}
+	public String getMember_id() {
+		return member_id;
+	}
+	public void setMember_id(String member_id) {
+		this.member_id = member_id;
+	}
+	public String getHome_member_id() {
+		return home_member_id;
+	}
+	public void setHome_member_id(String home_member_id) {
+		this.home_member_id = home_member_id;
+	}
+	public String getAway_member_id() {
+		return away_member_id;
+	}
+	public void setAway_member_id(String away_member_id) {
+		this.away_member_id = away_member_id;
+	}
+>>>>>>> Stashed changes
 	public String getSelectTeam() {
 		return selectTeam;
 	}

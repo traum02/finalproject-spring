@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "HTTP://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="place.data.PlaceDto" alias="pdto"/>
+		<typeAlias type="place.data.ReservationDto" alias="resdto"/>
+		<typeAlias type="place.data.TimeTableDto" alias="ttdto"/>
+		<typeAlias type="league.data.LeagueRankingDto" alias="rankdto"/>
+		<typeAlias type="league.data.LeagueRoundDto" alias="rounddto"/>
+		<typeAlias type="league.data.LeagueDto" alias="leaguedto"/>
+	</typeAliases>
+	<mappers>
+		<mapper resource="mybatis/setting/PlaceSql.xml"/>
+		<mapper resource="mybatis/setting/LeagueSql.xml"/>
+	</mappers>
+	
+</configuration>

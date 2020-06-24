@@ -30,5 +30,17 @@
 	<update id="updateReservation" parameterType="resdto">
 		update reservation set member_id=concat(member_id,'/',#{member_id}), res_team1=res_team1+#{res_team1}, res_team2=res_team2+#{res_team2} where res_time=#{res_time} and time_id=#{time_id}
 	</update>
+<<<<<<< Updated upstream
 >>>>>>> Match
+=======
+	<update id="updateReservationOfAway" parameterType="resdto">
+		update reservation set away_member_id=concat(away_member_id,#{away_member_id}), res_team1=res_team1+#{res_team1}, res_team2=res_team2+#{res_team2} where res_time=#{res_time} and time_id=#{time_id}
+	</update>
+	<select id="getOneRes" parameterType="resdto" resultType="resdto">
+		select * from reservation where res_time=#{res_time} and time_id=#{time_id}
+	</select>
+	<select id="selectForBanner" resultType="resdto">
+		select r.*,p.place_name,p.place_addr,pt.time_val,p.place_max-res_team1-res_team2 as free from reservation r join place p on r.place_id=p.place_id and r.res_team1+r.res_team2!=p.place_max join place_time pt on r.time_id=pt.time_id where r.res_type=0 or (r.res_type=1 and (r.res_team1 !=1 or r.res_team2 !=1)) order by res_time,free limit 5
+	</select>
+>>>>>>> Stashed changes
 </mapper>

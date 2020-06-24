@@ -1,20 +1,25 @@
 package place.data;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-<<<<<<< HEAD
-=======
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
->>>>>>> Match
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,14 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class PlaceController {
 
 	@Autowired
-<<<<<<< HEAD
-	PlaceDaoInter dao;
-	
-	@GetMapping("/placelist")
-	public List<PlaceDto> list(@RequestParam(value="place_name",defaultValue = "") String place_name,@RequestParam(defaultValue = "") String place_addr){
-//		System.out.println(place_name);
-		System.out.println(place_addr+"지역");
-=======
 	private PlaceDaoInter dao;
 	
 	@GetMapping("/placelist")
@@ -38,25 +35,18 @@ public class PlaceController {
 //		System.out.println(place_name);
 		if(place_addr.equals("서울시 전체"))
 			place_addr="서울";
->>>>>>> Match
 		place_name="%"+place_name+"%";
 		place_addr="%"+place_addr+"%";
 //		System.out.println(sdf.format(today));
 //		System.out.println(type);
 //		System.out.println(res_time);
-<<<<<<< HEAD
-		return dao.list(place_addr,place_name);
-=======
 		return dao.list(place_addr,place_name,pageNum);
->>>>>>> Match
 	}
 	
 	@GetMapping("/placelist/detail")
-	public PlaceDto detail(@RequestParam int id){
+	public PlaceDto detail (@RequestParam int id){
 //		System.out.println(id);
 //		System.out.println(dao.getData(id).getPlace_name());
-<<<<<<< Updated upstream
-=======
 		return dao.getData(id);
 	}
 	
@@ -314,12 +304,10 @@ public class PlaceController {
 //			e.printStackTrace();
 //		}
 
->>>>>>> Stashed changes
 		
-		return dao.getData(id);
+		return tmp;
+
 	}
-<<<<<<< Updated upstream
-=======
 	
 	
 	@GetMapping("/forbanner")
@@ -327,14 +315,10 @@ public class PlaceController {
 		return dao.getDatasForBanner();
 	}
 	
->>>>>>> Stashed changes
 	@GetMapping("/placelist/gettime")
 	public List<TimeTableDto> getTime(@ModelAttribute TimeTableDto dto){
-<<<<<<< HEAD
 		System.out.println(dto.getPlace_id()+"id");
-=======
 //		System.out.println(dto.getPlace_id()+"id, type="+dto.getRes_type());
->>>>>>> Match
 		if(dto.getRes_time().equals("")||dto.getRes_time().equals("undefined")) {
 			Date today=new Date();
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
@@ -344,18 +328,19 @@ public class PlaceController {
 		return dao.getTimes(dto);
 	}
 	
-<<<<<<< HEAD
-}
-=======
 	@PostMapping("/placelist/addRes")
 	public void addRes(@RequestBody ReservationDto dto) {
 //		System.out.println(dto.getSelectTeam()+"addres, type="+dto.getRes_type());
 		if(dto.getSelectTeam().equals("1팀")) {
 			dto.setRes_team1("1");
 			dto.setRes_team2("0");
+			dto.setHome_member_id(dto.getMember_id());
+			dto.setAway_member_id("");
 		}else {
 			dto.setRes_team1("0");
 			dto.setRes_team2("1");
+			dto.setHome_member_id("");
+			dto.setAway_member_id(dto.getMember_id());
 		}
 		dao.addRes(dto);
 	}
@@ -366,13 +351,25 @@ public class PlaceController {
 		if(dto.getSelectTeam().equals("1팀")) {
 			dto.setRes_team1("1");
 			dto.setRes_team2("0");
+			if(dao.getOneRes(dto).getHome_member_id().equals("")) {
+				dto.setHome_member_id(dto.getMember_id());	
+			}else {
+				dto.setHome_member_id("/"+dto.getMember_id());
+			}
+			dto.setAway_member_id("");
+			dao.updateResHome(dto);
 		}else {
 			dto.setRes_team1("0");
 			dto.setRes_team2("1");
+			dto.setHome_member_id("");
+			if(dao.getOneRes(dto).getAway_member_id().equals("")) {
+				dto.setAway_member_id(dto.getMember_id());
+			}else {
+				dto.setAway_member_id("/"+dto.getMember_id());
+			}
+			dao.updateResAway(dto);
 		}
-		dao.updateRes(dto);
 	}
 
 }
 
->>>>>>> Match

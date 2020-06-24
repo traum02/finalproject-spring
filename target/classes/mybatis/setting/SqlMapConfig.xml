@@ -5,15 +5,12 @@
 		<typeAlias type="place.data.PlaceDto" alias="pdto"/>
 		<typeAlias type="place.data.ReservationDto" alias="resdto"/>
 		<typeAlias type="place.data.TimeTableDto" alias="ttdto"/>
-		<typeAlias type="league.data.LeagueRankingDto" alias="lrdto"/>
+		<typeAlias type="league.data.LeagueRankingDto" alias="rankdto"/>
 		<typeAlias type="league.data.LeagueRoundDto" alias="rounddto"/>
-<<<<<<< Updated upstream
-=======
 		<typeAlias type="league.data.LeagueDto" alias="leaguedto"/>
 		<typeAlias type="spring.project.work.MemberDto" alias="mdto"/>
 		<typeAlias type="spring.project.work.IboardDto" alias="ibdto"/>
 		
->>>>>>> Stashed changes
 	</typeAliases>
 	<mappers>
 		<mapper resource="mybatis/setting/PlaceSql.xml"/>

@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="league">
-	<select id="selectOfLeagueRanking" resultType="lrdto">
-		select * from league_team
+	<select id="selectOfLeagueRanking" parameterType="int" resultType="rankdto">
+		select *,(team_win*3+team_draw*1+team_lose*0) as team_score from league_team where league_id=#{league_id} order by team_score desc
 	</select>
 	<select id="getLeagueMaxId" resultType="int">
 		select max(league_id) from league
 	</select>
 	<insert id="insertOfLeaguePlan" parameterType="rounddto">
 		INSERT INTO league_round (round_cnt, round_date, league_id, league_team1, league_team2, league_team1goal, league_team2goal, round_status) VALUES (#{round_cnt}, #{round_date}, #{league_id}, #{league_team1}, #{league_team2}, 0, 0, 'N');
+	</insert>
+	<select id="getLeagueRound" parameterType="int" resultType="rounddto">
+<!-- 		select * from league_round where league_id=#{league_id} -->
+		select rnd.*,t1.league_team_name as team1_name,t2.league_team_name as team2_name  from league_round rnd join(select league_team_id,league_team_name from league_team) t1 on rnd.league_team1=t1.league_team_id join(select league_team_id,league_team_name from league_team) t2 on rnd.league_team2=t2.league_team_id where league_id=#{league_id} order by rnd.round_id asc
+	</select>
+	<select id="getLeagueDate" parameterType="hashmap" resultType="String">
+		select DISTINCT round_date from league_round where league_id=#{league_id} limit #{pageNum},1
+	</select>
+	<select id="getLeagueName" parameterType="int" resultType="leaguedto">
+		select * from league order by league_id desc limit #{pageNum},1
+	</select>
+	
+	<insert id="joinLeague" parameterType="rankdto">
+		insert into league_team (league_team_name,team_num,league_id) values (#{league_team_name},#{team_num},#{league_id})
 	</insert>
 </mapper>

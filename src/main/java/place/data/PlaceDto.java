@@ -9,8 +9,6 @@ public class PlaceDto {
 	private String place_pic;
 	private String place_etc;
 	private String place_addr;
-<<<<<<< HEAD
-=======
 	private int place_max;
 	public int getPlace_max() {
 		return place_max;
@@ -18,7 +16,6 @@ public class PlaceDto {
 	public void setPlace_max(int place_max) {
 		this.place_max = place_max;
 	}
->>>>>>> Match
 	public String getPlace_addr() {
 		return place_addr;
 	}

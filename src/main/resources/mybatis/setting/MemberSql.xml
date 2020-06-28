@@ -67,7 +67,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getMemberData" parameterType="String" resultType="mdto">
 		select * from member where id=#{id}
 	</select>
-	
+	<update id="usePointOfMember" parameterType="hashmap">
+		update member set point=point-#{usingPoint} where id=#{id}
+	</update>
 
 
 </mapper>

@@ -18,7 +18,35 @@ public class ReservationDto {
 	private String place_addr;
 	private String time_val;
 	private String free;
+	private int res_team1goal;
+	private int res_team2goal;
+	private String res_status;
+	private int place_max;
 	
+	public int getPlace_max() {
+		return place_max;
+	}
+	public void setPlace_max(int place_max) {
+		this.place_max = place_max;
+	}
+	public int getRes_team1goal() {
+		return res_team1goal;
+	}
+	public void setRes_team1goal(int res_team1goal) {
+		this.res_team1goal = res_team1goal;
+	}
+	public int getRes_team2goal() {
+		return res_team2goal;
+	}
+	public void setRes_team2goal(int res_team2goal) {
+		this.res_team2goal = res_team2goal;
+	}
+	public String getRes_status() {
+		return res_status;
+	}
+	public void setRes_status(String res_status) {
+		this.res_status = res_status;
+	}
 	public String getPlace_name() {
 		return place_name;
 	}

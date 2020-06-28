@@ -1,6 +1,7 @@
 package place.data;
 
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -10,6 +11,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -20,8 +22,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import spring.project.work.MemberDaoInter;
 
 @RestController
 @CrossOrigin
@@ -29,6 +37,40 @@ public class PlaceController {
 
 	@Autowired
 	private PlaceDaoInter dao;
+	@Autowired
+	private MemberDaoInter mdao;
+	
+	@GetMapping("/myres")
+	public List<ReservationDto> getMyRes(@RequestParam(defaultValue = "") String member_id,@RequestParam(defaultValue = "0") String team_id,@RequestParam int pageNum,@RequestParam(defaultValue = "",required = false) String res_type,@RequestParam(defaultValue = "20200101",required = false) String fromDate,@RequestParam(defaultValue = "20501231",required = false) String untilDate) {
+		team_id=Integer.toString(mdao.getMemberData(member_id).getTeam_int());
+		List<ReservationDto> list=dao.getMyRes(member_id,team_id,(pageNum-1)*10, res_type, fromDate, untilDate);
+		System.out.println(member_id+","+team_id+"--teamid");
+		System.out.println("res_type: "+res_type+" 시간"+fromDate+"~"+untilDate);
+//		아이디 포함 값중 실제 동일여부 체크
+		for(int i=0;i<list.size();i++) {
+			if(list.get(i).getRes_type().equals("0")) {
+				String[] homeMember=list.get(i).getHome_member_id().split("/");
+				String[] awayMember=list.get(i).getAway_member_id().split("/");
+				boolean chk=false;
+				if(Arrays.asList(homeMember).contains(member_id)) {
+					chk=true;
+				}
+				if(Arrays.asList(awayMember).contains(member_id)) {
+					chk=true;
+				}
+				if(chk==false) {
+					list.remove(i);
+				}
+			}
+		}
+		return list;
+	}
+	
+	@GetMapping("/totalmyres")
+	public int getTotalOfMyRes(@RequestParam(defaultValue = "") String member_id,@RequestParam(defaultValue = "0") String team_id,@RequestParam(defaultValue = "",required = false) String res_type,@RequestParam(defaultValue = "20200101",required = false) String fromDate,@RequestParam(defaultValue = "20501231",required = false) String untilDate) {
+		team_id=Integer.toString(mdao.getMemberData(member_id).getTeam_int());
+		return dao.getTotalOfMyRes(member_id,team_id, res_type, fromDate, untilDate);
+	}
 	
 	@GetMapping("/placelist")
 	public List<PlaceDto> list(@RequestParam(value="place_name",defaultValue = "") String place_name,@RequestParam(defaultValue = "") String place_addr,@RequestParam int pageNum){
@@ -87,13 +129,8 @@ public class PlaceController {
 			baseTime="0"+baseTime;
 		}
 		
-		
-		
-		
 		System.out.println(today+"asdasd");
 		System.out.println(baseTime+"ttttt");
-
-		
 		
         StringBuilder urlBuilder = new StringBuilder(apiUrl);
         try {
@@ -197,7 +234,7 @@ public class PlaceController {
 		
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
 		Date date=new Date();
-		SimpleDateFormat sdf1=new SimpleDateFormat("HH00");
+		SimpleDateFormat sdf1=new SimpleDateFormat("HHmm");
 		String t=sdf1.format(date);
 		String today=sdf.format(date);
 		
@@ -217,7 +254,8 @@ public class PlaceController {
 			baseDate=today;
 		}
 		
-
+		System.out.println("today:"+today);
+		System.out.println("today:"+t);
 		System.out.println(baseDate+"/"+baseTime+"asdasd");
         StringBuilder urlBuilder = new StringBuilder(apiUrl);
         try {
@@ -309,10 +347,132 @@ public class PlaceController {
 
 	}
 	
+	private FileOutputStream fos;
+	public void writeFile(MultipartFile file,String path)
+	{
+		//파일명
+		Date today=new Date();
+//		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddHHmm");
+//		String fileName=sdf.format(today)+file.getOriginalFilename();
+		String fileName=file.getOriginalFilename();
+
+		try {
+			byte []fileData=file.getBytes();
+			fos=new FileOutputStream(path+"\\"+fileName);
+			fos.write(fileData);		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			try {
+				fos.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
+	@RequestMapping(value = "/place/uploadpic", headers = ("content-type=multipart/*"),method = RequestMethod.POST)
+	public String fileUpload(MultipartHttpServletRequest request, @RequestParam MultipartFile[] uploadFile) {
+		String oriFileName="";
+		for(int i=0;i<uploadFile.length;i++) {
+			System.out.println("file: "+uploadFile[i].getOriginalFilename());
+			Date date=new Date();
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddHHmm");
+			String rename=sdf.format(date)+uploadFile[i].getOriginalFilename();
+			String path=request.getSession().getServletContext().getRealPath("/WEB-INF/image");
+			oriFileName+=uploadFile[i].getOriginalFilename()+"/";
+			System.out.println(path);
+			writeFile(uploadFile[i], path);
+		}
+		oriFileName=oriFileName.substring(0,oriFileName.lastIndexOf("/"));
+		
+		return oriFileName;
+	}
+	
+	@PostMapping("/insertplace")
+	public void addPlace(@RequestBody PlaceDto dto) {
+		String[] etc=dto.getPlace_etc().split(",");
+		String place_etc="";
+		for(String s: etc) {
+			if(s.equals("")) {
+				place_etc+=s;
+			}else {
+				place_etc+=s+"/";
+			}
+		}
+		if(place_etc.contains("/")) {
+			place_etc=place_etc.substring(0, place_etc.length()-1);
+		}
+		place_etc=place_etc.replace("0", "주차");
+		place_etc=place_etc.replace("1", "공");
+		place_etc=place_etc.replace("2", "샤워");
+		place_etc=place_etc.replace("3", "풋살화");
+		place_etc=place_etc.replace("4", "유니폼");
+
+		System.out.println("place_etc="+place_etc);
+		System.out.println("place_price="+dto.getPlace_price());
+		System.out.println("place_max="+dto.getPlace_max());
+		
+		dto.setPlace_etc(place_etc);
+		dao.addPlace(dto);
+
+		//시간테이블 생성
+		int place_maxid=dao.getMaxNumOfPlace();
+		
+		for(int i=1;i<=23;i+=2) {
+			String time_val=((i+"").length()>1?i+"":"0"+i)+((i+2+"").length()>1?(i+2+""):"0"+(i+2));
+			if(i+2==25) {
+				time_val=time_val.replace("25", "01");
+			}
+			dao.addPlaceTime(time_val, place_maxid);
+		}
+		
+	}
+	
+	@PostMapping("/updateplace")
+	public void updatePlace(@RequestBody PlaceDto dto) {
+		String[] etc=dto.getPlace_etc().split(",");
+		String place_etc="";
+		for(String s: etc) {
+			if(s.equals("")) {
+				place_etc+=s;
+			}else {
+				place_etc+=s+"/";
+			}
+		}
+		if(place_etc.contains("/")) {
+			place_etc=place_etc.substring(0, place_etc.length()-1);
+		}
+
+		System.out.println("place_etc="+place_etc);
+		System.out.println("place_price="+dto.getPlace_price());
+		System.out.println("place_max="+dto.getPlace_max());
+		
+		dto.setPlace_etc(place_etc);
+		dao.updatePlace(dto);
+
+//		//시간테이블 생성
+//		int place_maxid=dao.getMaxNumOfPlace();
+//		
+//		for(int i=1;i<=23;i+=2) {
+//			String time_val=((i+"").length()>1?i+"":"0"+i)+((i+2+"").length()>1?(i+2+""):"0"+(i+2));
+//			if(i+2==25) {
+//				time_val=time_val.replace("25", "01");
+//			}
+//			dao.addPlaceTime(time_val, place_maxid);
+//		}
+		
+	}
+
+	
 	
 	@GetMapping("/forbanner")
-	public List<ReservationDto> getForBanner(){
-		return dao.getDatasForBanner();
+	public List<ReservationDto> getForBanner(String date,String time){
+		System.out.println(date+time);
+		return dao.getDatasForBanner(date,time);
 	}
 	
 	@GetMapping("/placelist/gettime")
@@ -348,6 +508,8 @@ public class PlaceController {
 	@PostMapping("/placelist/updateRes")
 	public void updateRes(@RequestBody ReservationDto dto) {
 		System.out.println(dto.getSelectTeam()+"update, type="+dto.getRes_type());
+		
+		
 		if(dto.getSelectTeam().equals("1팀")) {
 			dto.setRes_team1("1");
 			dto.setRes_team2("0");

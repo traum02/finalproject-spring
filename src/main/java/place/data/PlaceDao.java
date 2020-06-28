@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Repository
 public class PlaceDao extends SqlSessionDaoSupport implements PlaceDaoInter{
@@ -59,11 +60,66 @@ public class PlaceDao extends SqlSessionDaoSupport implements PlaceDaoInter{
 	}
 
 	@Override
-	public List<ReservationDto> getDatasForBanner() {
+	public List<ReservationDto> getDatasForBanner(String date,String time) {
 		// TODO Auto-generated method stub
-		return getSqlSession().selectList("selectForBanner");
+		HashMap<String , Object> map=new HashMap<String, Object>();
+		map.put("date",date);
+		map.put("time",time);
+
+		return getSqlSession().selectList("selectForBanner",map);
 	}
 
+	@Override
+	public List<ReservationDto> getMyRes(String member_id,String team_id,int pageNum,String res_type,String fromDate,String untilDate) {
+		// TODO Auto-generated method stub
+		HashMap<String , Object> map=new HashMap<String, Object>();
+		map.put("member_id","%"+member_id+"%");
+		map.put("team_id",team_id);
+		map.put("pageNum",pageNum);
+		map.put("res_type",res_type);
+		map.put("fromDate",fromDate);
+		map.put("untilDate",untilDate);
+		return getSqlSession().selectList("getMyPrivateRes",map);
+	}
 	
+	@Override
+	public int getTotalOfMyRes(String member_id, String team_id,String res_type,String fromDate,String untilDate) {
+		// TODO Auto-generated method stub
+		HashMap<String , Object> map=new HashMap<String, Object>();
+		map.put("member_id","%"+member_id+"%");
+		map.put("team_id",team_id);
+		map.put("res_type",res_type);
+		map.put("fromDate",fromDate);
+		map.put("untilDate",untilDate);
+
+		return getSqlSession().selectOne("getTotalOfMyRes",map);
+	}
+
+	@Override
+	public void addPlace(PlaceDto dto) {
+		// TODO Auto-generated method stub
+		getSqlSession().insert("addPlace",dto);
+	}
+
+	@Override
+	public int getMaxNumOfPlace() {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne("getMaxNumOfPlace");
+	}
+
+	@Override
+	public void addPlaceTime(String time_val, int place_id) {
+		// TODO Auto-generated method stub
+		HashMap<String , Object> map=new HashMap<String, Object>();
+		map.put("time_val",time_val);
+		map.put("place_id",place_id);
+		getSqlSession().insert("addPlaceTime",map);
+	}
+
+	@Override
+	public void updatePlace(PlaceDto dto) {
+		// TODO Auto-generated method stub
+		getSqlSession().update("updatePlace", dto);
+	}
 
 }

@@ -128,6 +128,17 @@ public class MemberDao extends SqlSessionDaoSupport implements MemberDaoInter{
 		// TODO Auto-generated method stub
 		return getSqlSession().selectOne("getMemberData", id);
 	}
+
+
+
+	@Override
+	public void usePoint(String id, String usingPoint) {
+		// TODO Auto-generated method stub
+		HashMap<String, String> map=new HashMap<String, String>();
+		map.put("id", id);
+		map.put("usingPoint", usingPoint);
+		getSqlSession().update("usePointOfMember",map);
+	}
 	
 	
 	

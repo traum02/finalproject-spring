@@ -21,10 +21,17 @@ public class MemberController {
 	@Autowired
 	private MemberDaoInter dao;
 	
-	
+	//추가
 	@GetMapping("/memberdata")
-	public MemberDto getDate(String id) {
+	public MemberDto getData(String id) {
 		return dao.getMemberData(id);
+	}
+	
+	@GetMapping("/usepoint")
+	public void usePoint(@RequestParam String id, String usingPoint) {
+		System.out.println("id"+id);
+		System.out.println("usingPoint"+usingPoint);
+		dao.usePoint(id, usingPoint);
 	}
 	
 	

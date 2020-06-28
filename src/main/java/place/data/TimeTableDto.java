@@ -8,6 +8,21 @@ public class TimeTableDto {
 	private String res_type;//개인 팀 여부
 	private int res_team1;
 	private int res_team2;
+	private String home_member_id;
+	private String away_member_id;
+	
+	public String getHome_member_id() {
+		return home_member_id;
+	}
+	public void setHome_member_id(String home_member_id) {
+		this.home_member_id = home_member_id;
+	}
+	public String getAway_member_id() {
+		return away_member_id;
+	}
+	public void setAway_member_id(String away_member_id) {
+		this.away_member_id = away_member_id;
+	}
 	public int getRes_team1() {
 		return res_team1;
 	}

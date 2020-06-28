@@ -31,4 +31,6 @@ public interface MemberDaoInter {
 	public int getGrade(String id);
 	
 	public MemberDto getMemberData(String id);
+	public void usePoint(String id,String usingPoint);
+	
 }

@@ -43,7 +43,21 @@
 	<update id="updatePlace" parameterType="pdto">
 		update place set place_name=#{place_name},place_lat=#{place_lat},place_lng=#{place_lng},place_etc=#{place_etc},place_pic=#{place_pic},place_addr=#{place_addr},place_max=#{place_max},place_price=#{place_price} where place_id=#{place_id}
 	</update>
-	
+	<select id="getAllRes" parameterType="hashmap" resultType="resdto">
+		select r.*,p.place_name,p.place_addr,p.place_max,pt.time_val from reservation r join place p on r.place_id=p.place_id and r.res_team1+r.res_team2!=p.place_max join place_time pt on r.time_id=pt.time_id where res_time between #{fromDate} and #{untilDate} and (res_type like concat('%',#{res_type},'%') or res_etc like concat('%','','%'))  order by res_time desc,time_val asc limit #{pageNum},10
+	</select>
+	<select id="getTotalOfAllRes" parameterType="hashmap" resultType="int">
+		select count(*) from reservation r join place p on r.place_id=p.place_id and r.res_team1+r.res_team2!=p.place_max join place_time pt on r.time_id=pt.time_id where res_time between #{fromDate} and #{untilDate} and (res_type like concat('%',#{res_type},'%') or res_etc=0)
+	</select>
+	<update id="updateMngRes" parameterType="resdto">
+		update reservation set res_team1goal=#{res_team1goal}, res_team2goal=#{res_team2goal}, res_status='Y' where res_id=#{res_id}
+	</update>
+	<select id="getResForStandby" parameterType="hashmap" resultType="resdto">
+		select r.*,p.place_name,p.place_addr,p.place_max,pt.time_val from reservation r join place p on r.place_id=p.place_id and r.res_team1+r.res_team2!=p.place_max join place_time pt on r.time_id=pt.time_id where res_time between #{fromDate} and #{untilDate} and (res_type like concat('%',#{res_type},'%') or res_etc=0) and	((place_max-res_team1-res_team2=0 and res_type=0) or (res_team1=1 and res_team2=1 and res_type=1)) order by res_time desc,time_val asc limit #{pageNum},10
+	</select>
+	<select id="getTotalForStandby" parameterType="hashmap" resultType="int">
+		select count(*) from reservation r join place p on r.place_id=p.place_id and r.res_team1+r.res_team2!=p.place_max join place_time pt on r.time_id=pt.time_id where res_time between #{fromDate} and #{untilDate} and (res_type like concat('%',#{res_type},'%') or res_etc=0) and	((place_max-res_team1-res_team2=0 and res_type=0) or (res_team1=1 and res_team2=1 and res_type=1))
+	</select>
 	
 	<select id="getMaxNumOfPlace" resultType="int">
 		select max(place_id) from place 

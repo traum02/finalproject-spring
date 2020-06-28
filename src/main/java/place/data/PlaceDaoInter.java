@@ -12,9 +12,14 @@ public interface PlaceDaoInter {
 	public ReservationDto getOneRes(ReservationDto dto);
 	public List<ReservationDto> getDatasForBanner(String date,String time);
 	public List<ReservationDto> getMyRes(String member_id,String team_id,int pageNum,String res_type,String fromDate,String untilDate);
+	public List<ReservationDto> getAllRes(int pageNum,String res_type,String fromDate,String untilDate);
+	public List<ReservationDto> getResForStandby(int pageNum,String res_type,String fromDate,String untilDate);
 	public int getTotalOfMyRes(String member_id, String team_id,String res_type,String fromDate,String untilDate);
+	public int getTotalOfAllRes(String res_type,String fromDate,String untilDate);
+	public int getTotalForStandby(String res_type,String fromDate,String untilDate);
 	public void addPlace(PlaceDto dto);
 	public int getMaxNumOfPlace();
 	public void addPlaceTime(String time_val,int place_id);
 	public void updatePlace(PlaceDto dto);
+	public void updateMngRes(ReservationDto dto);
 }

@@ -40,6 +40,40 @@ public class PlaceController {
 	@Autowired
 	private MemberDaoInter mdao;
 	
+	@PostMapping("/manage/updateres")
+	public void updatemngRes(@RequestBody ReservationDto dto) {
+//		System.out.println(dto.getRes_id());
+//		System.out.println(dto.getRes_team1goal());
+//		System.out.println(dto.getRes_team2goal());
+		dao.updateMngRes(dto);
+	}
+	
+	@GetMapping("/mngres")
+	public List<ReservationDto> getAllRes(@RequestParam int pageNum,@RequestParam(defaultValue = "",required = false) String res_type,@RequestParam(defaultValue = "20200101",required = false) String fromDate,@RequestParam(defaultValue = "20501231",required = false) String untilDate,@RequestParam String res_status) {
+//		System.out.println("res_type: "+res_type+" 시간"+fromDate+"~"+untilDate);
+//		System.out.println(res_status);
+		List<ReservationDto> list=null;
+		if(res_status.equals("1")) {
+			list=dao.getResForStandby((pageNum-1)*10, res_type, fromDate, untilDate);
+		}else {
+			list=dao.getAllRes((pageNum-1)*10, res_type, fromDate, untilDate);
+		}
+		return list;
+	}
+
+	@GetMapping("/totalallres")
+	public int getTotalOfAllRes(@RequestParam(defaultValue = "",required = false) String res_type,@RequestParam(defaultValue = "20200101",required = false) String fromDate,@RequestParam(defaultValue = "20501231",required = false) String untilDate,@RequestParam String res_status) {
+		int totalcount=0;
+		if(res_status.equals("1")) {
+			totalcount=dao.getTotalForStandby(res_type, fromDate, untilDate);
+		}else {
+			totalcount=dao.getTotalOfAllRes(res_type, fromDate, untilDate);
+		}
+
+		return totalcount;
+	}
+
+	
 	@GetMapping("/myres")
 	public List<ReservationDto> getMyRes(@RequestParam(defaultValue = "") String member_id,@RequestParam(defaultValue = "0") String team_id,@RequestParam int pageNum,@RequestParam(defaultValue = "",required = false) String res_type,@RequestParam(defaultValue = "20200101",required = false) String fromDate,@RequestParam(defaultValue = "20501231",required = false) String untilDate) {
 		team_id=Integer.toString(mdao.getMemberData(member_id).getTeam_int());

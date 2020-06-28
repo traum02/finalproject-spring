@@ -34,7 +34,6 @@ public class MemberController {
 		dao.usePoint(id, usingPoint);
 	}
 	
-	
 	@GetMapping("/member/list")
 	public List<MemberDto> list()
 	{

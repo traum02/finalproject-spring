@@ -122,4 +122,54 @@ public class PlaceDao extends SqlSessionDaoSupport implements PlaceDaoInter{
 		getSqlSession().update("updatePlace", dto);
 	}
 
+	@Override
+	public List<ReservationDto> getAllRes(int pageNum, String res_type, String fromDate, String untilDate) {
+		// TODO Auto-generated method stub
+		HashMap<String , Object> map=new HashMap<String, Object>();
+		map.put("pageNum",pageNum);
+		map.put("res_type",res_type);
+		map.put("fromDate",fromDate);
+		map.put("untilDate",untilDate);
+
+		return getSqlSession().selectList("getAllRes", map);
+	}
+
+	@Override
+	public int getTotalOfAllRes(String res_type, String fromDate, String untilDate) {
+		// TODO Auto-generated method stub
+		HashMap<String , Object> map=new HashMap<String, Object>();
+		map.put("res_type",res_type);
+		map.put("fromDate",fromDate);
+		map.put("untilDate",untilDate);
+
+		return getSqlSession().selectOne("getTotalOfAllRes",map);
+	}
+
+	@Override
+	public void updateMngRes(ReservationDto dto) {
+		// TODO Auto-generated method stub
+		getSqlSession().update("updateMngRes", dto);
+	}
+	
+	@Override
+	public List<ReservationDto> getResForStandby(int pageNum, String res_type, String fromDate, String untilDate) {
+		// TODO Auto-generated method stub
+		HashMap<String , Object> map=new HashMap<String, Object>();
+		map.put("pageNum",pageNum);
+		map.put("res_type",res_type);
+		map.put("fromDate",fromDate);
+		map.put("untilDate",untilDate);
+
+		return getSqlSession().selectList("getResForStandby",map);
+	}
+	@Override
+	public int getTotalForStandby(String res_type, String fromDate, String untilDate) {
+		// TODO Auto-generated method stub
+		HashMap<String , Object> map=new HashMap<String, Object>();
+		map.put("res_type",res_type);
+		map.put("fromDate",fromDate);
+		map.put("untilDate",untilDate);
+
+		return getSqlSession().selectOne("getTotalForStandby",map);
+	}
 }

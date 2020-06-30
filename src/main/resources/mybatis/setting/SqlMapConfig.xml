@@ -10,6 +10,9 @@
 		<typeAlias type="league.data.LeagueDto" alias="leaguedto"/>
 		<typeAlias type="spring.project.work.MemberDto" alias="mdto"/>
 		<typeAlias type="spring.project.work.IboardDto" alias="ibdto"/>
+		
+		
+		<typeAlias type="place.data.TeamDto" alias="teamdto"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mybatis/setting/PlaceSql.xml"/>

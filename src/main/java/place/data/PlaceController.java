@@ -73,11 +73,18 @@ public class PlaceController {
 		return totalcount;
 	}
 
+	@GetMapping("/myhistory/teaminfo")
+	public TeamDto teamInfo(int team_num) {
+		
+		return dao.getTeamInfo(team_num);
+	}
+	
 	
 	@GetMapping("/myres")
-	public List<ReservationDto> getMyRes(@RequestParam(defaultValue = "") String member_id,@RequestParam(defaultValue = "0") String team_id,@RequestParam int pageNum,@RequestParam(defaultValue = "",required = false) String res_type,@RequestParam(defaultValue = "20200101",required = false) String fromDate,@RequestParam(defaultValue = "20501231",required = false) String untilDate) {
+	public List<ReservationDto> getMyRes(@RequestParam(defaultValue = "") String member_id,@RequestParam(defaultValue = "0") String team_id,@RequestParam int pageNum,@RequestParam(defaultValue = "",required = false) String res_type,@RequestParam(defaultValue = "20200101",required = false) String fromDate,@RequestParam(defaultValue = "20501231",required = false) String untilDate,@RequestParam(required = false,defaultValue = "") String resStatus) {
 		team_id=Integer.toString(mdao.getMemberData(member_id).getTeam_int());
-		List<ReservationDto> list=dao.getMyRes(member_id,team_id,(pageNum-1)*10, res_type, fromDate, untilDate);
+		System.out.println(resStatus);
+		List<ReservationDto> list=dao.getMyRes(member_id,team_id,(pageNum-1)*10, res_type, fromDate, untilDate,resStatus);
 		System.out.println(member_id+","+team_id+"--teamid");
 		System.out.println("res_type: "+res_type+" 시간"+fromDate+"~"+untilDate);
 //		아이디 포함 값중 실제 동일여부 체크
@@ -101,9 +108,9 @@ public class PlaceController {
 	}
 	
 	@GetMapping("/totalmyres")
-	public int getTotalOfMyRes(@RequestParam(defaultValue = "") String member_id,@RequestParam(defaultValue = "0") String team_id,@RequestParam(defaultValue = "",required = false) String res_type,@RequestParam(defaultValue = "20200101",required = false) String fromDate,@RequestParam(defaultValue = "20501231",required = false) String untilDate) {
+	public int getTotalOfMyRes(@RequestParam(defaultValue = "") String member_id,@RequestParam(defaultValue = "0") String team_id,@RequestParam(defaultValue = "",required = false) String res_type,@RequestParam(defaultValue = "20200101",required = false) String fromDate,@RequestParam(defaultValue = "20501231",required = false) String untilDate,@RequestParam(required = false,defaultValue = "") String resStatus) {
 		team_id=Integer.toString(mdao.getMemberData(member_id).getTeam_int());
-		return dao.getTotalOfMyRes(member_id,team_id, res_type, fromDate, untilDate);
+		return dao.getTotalOfMyRes(member_id,team_id, res_type, fromDate, untilDate,resStatus);
 	}
 	
 	@GetMapping("/placelist")

@@ -29,10 +29,10 @@
 		select r.*,p.place_name,p.place_addr,pt.time_val,p.place_max-res_team1-res_team2 as free from reservation r join place p on r.place_id=p.place_id and r.res_team1+r.res_team2!=p.place_max join place_time pt on r.time_id=pt.time_id where (r.res_type=0 or (r.res_type=1 and (r.res_team1 !=1 or r.res_team2 !=1))) and ((r.res_time=#{date} and pt.time_val>=#{time}) or r.res_time>#{date}) order by res_time,free limit 5
 	</select>
 	<select id="getMyPrivateRes" parameterType="hashmap" resultType="resdto">
-		select r.*,p.place_name,p.place_addr,p.place_max,pt.time_val from reservation r join place p on r.place_id=p.place_id and r.res_team1+r.res_team2!=p.place_max join place_time pt on r.time_id=pt.time_id where (((home_member_id like #{member_id} or away_member_id like #{member_id}) and res_type=0) or ((home_member_id = #{team_id} or away_member_id = #{team_id}) and res_type!=0 )) and res_time between #{fromDate} and #{untilDate} and (res_type like concat('%',#{res_type},'%') or res_etc=0)  order by res_time desc,time_val asc limit #{pageNum},10
+		select r.*,p.place_name,p.place_addr,p.place_max,pt.time_val from reservation r join place p on r.place_id=p.place_id and r.res_team1+r.res_team2!=p.place_max join place_time pt on r.time_id=pt.time_id where (((home_member_id like #{member_id} or away_member_id like #{member_id}) and res_type=0) or ((home_member_id = #{team_id} or away_member_id = #{team_id}) and res_type!=0 )) and res_time between #{fromDate} and #{untilDate} and (res_type like concat('%',#{res_type},'%') or res_etc=0) and res_status!=#{res_status} order by res_time desc,time_val asc limit #{pageNum},10
 	</select>
 	<select id="getTotalOfMyRes" parameterType="hashmap" resultType="int">
-		select count(*) from reservation r join place p on r.place_id=p.place_id and r.res_team1+r.res_team2!=p.place_max join place_time pt on r.time_id=pt.time_id where (((home_member_id like #{member_id} or away_member_id like #{member_id}) and res_type=0) or ((home_member_id = #{team_id} or away_member_id = #{team_id}) and res_type!=0 )) and res_time between #{fromDate} and #{untilDate} and (res_type like concat('%',#{res_type},'%') or res_etc=0)
+		select count(*) from reservation r join place p on r.place_id=p.place_id and r.res_team1+r.res_team2!=p.place_max join place_time pt on r.time_id=pt.time_id where (((home_member_id like #{member_id} or away_member_id like #{member_id}) and res_type=0) or ((home_member_id = #{team_id} or away_member_id = #{team_id}) and res_type!=0 )) and res_time between #{fromDate} and #{untilDate} and (res_type like concat('%',#{res_type},'%') or res_etc=0) and res_status!=#{res_status}
 	</select>
 	<insert id="addPlace" parameterType="pdto">
 		insert into place (place_name,place_lat,place_lng,place_price,place_pic,place_etc,place_addr,place_max) values (#{place_name},#{place_lat},#{place_lng},#{place_price},#{place_pic},#{place_etc},#{place_addr},#{place_max})
@@ -62,4 +62,13 @@
 	<select id="getMaxNumOfPlace" resultType="int">
 		select max(place_id) from place 
 	</select>
+	
+	
+	
+	<select id="getTeamInfo" parameterType="int" resultType="teamdto">
+		select * from team where team_num=#{team_num}
+	</select>
+	
+	
+	
 </mapper>

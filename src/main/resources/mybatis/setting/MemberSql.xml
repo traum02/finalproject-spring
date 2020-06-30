@@ -7,7 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from member order by point asc
 	</select>
 	<insert id="insertOfMember" parameterType="mdto">
-		insert into member values (#{name},#{birth},#{id},#{pwd},#{email},#{gender},#{addr},#{phone},0,0,0,0,0)
+		insert into member (name,birth,id,pwd,email,gender,addr,phone,point,team_int,team_name,team_grade,grade) values (#{name},#{birth},#{id},#{pwd},#{email},#{gender},#{addr},#{phone},0,0,0,0,0)
 	</insert>
 	<delete id="deleteOfMember" parameterType="String">
 		delete from member where id=#{id}

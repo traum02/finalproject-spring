@@ -81,7 +81,7 @@ public class PlaceController {
 	
 	
 	@GetMapping("/myres")
-	public List<ReservationDto> getMyRes(@RequestParam(defaultValue = "") String member_id,@RequestParam(defaultValue = "0") String team_id,@RequestParam int pageNum,@RequestParam(defaultValue = "",required = false) String res_type,@RequestParam(defaultValue = "20200101",required = false) String fromDate,@RequestParam(defaultValue = "20501231",required = false) String untilDate,@RequestParam(required = false,defaultValue = "") String resStatus) {
+	public List<ReservationDto> getMyRes(@RequestParam(defaultValue = "") String member_id,@RequestParam(defaultValue = "0") String team_id,@RequestParam(defaultValue = "0",required = false) int pageNum,@RequestParam(defaultValue = "",required = false) String res_type,@RequestParam(defaultValue = "20200101",required = false) String fromDate,@RequestParam(defaultValue = "20501231",required = false) String untilDate,@RequestParam(required = false,defaultValue = "") String resStatus) {
 		team_id=Integer.toString(mdao.getMemberData(member_id).getTeam_int());
 		System.out.println(resStatus);
 		List<ReservationDto> list=dao.getMyRes(member_id,team_id,(pageNum-1)*10, res_type, fromDate, untilDate,resStatus);

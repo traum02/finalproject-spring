@@ -11,4 +11,7 @@ public interface LeagueDaoInter {
 	public String getLeagueDate(int league_id,int pageNum);
 	public LeagueDto getLeagueName(int pageNum);
 	public void joinLeague(LeagueRankingDto dto);
+	public int getTimeId(String place_id);
+	public void updateLeague(LeagueRoundDto dto);
+	public void updateLeagueTable(LeagueRankingDto dto);
 }

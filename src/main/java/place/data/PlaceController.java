@@ -29,6 +29,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import league.data.LeagueDaoInter;
+import league.data.LeagueRankingDto;
+import league.data.LeagueRoundDto;
 import spring.project.work.MemberDaoInter;
 
 @RestController
@@ -39,12 +42,52 @@ public class PlaceController {
 	private PlaceDaoInter dao;
 	@Autowired
 	private MemberDaoInter mdao;
+	@Autowired
+	private LeagueDaoInter ldao;
 	
 	@PostMapping("/manage/updateres")
 	public void updatemngRes(@RequestBody ReservationDto dto) {
-//		System.out.println(dto.getRes_id());
-//		System.out.println(dto.getRes_team1goal());
-//		System.out.println(dto.getRes_team2goal());
+		if(dto.getRes_type()!=null) {
+			LeagueRoundDto ldto=new LeagueRoundDto();
+			ldto.setLeague_team1(Integer.parseInt(dto.getHome_member_id()));
+			ldto.setLeague_team2(Integer.parseInt(dto.getAway_member_id()));
+			ldto.setLeague_team1goal(dto.getRes_team1goal());
+			ldto.setLeague_team2goal(dto.getRes_team2goal());
+			ldao.updateLeague(ldto);
+			
+			LeagueRankingDto rkdto=new LeagueRankingDto();
+			if(dto.getRes_team1goal()>dto.getRes_team2goal()) {
+				rkdto.setType("win");
+				rkdto.setTeam_num(Integer.parseInt(dto.getHome_member_id()));
+				rkdto.setLeague_id(5);
+				System.out.println(rkdto.getLeague_team_id()+"1팀");
+				ldao.updateLeagueTable(rkdto);
+				rkdto.setType("lose");
+				rkdto.setTeam_num(Integer.parseInt(dto.getAway_member_id()));
+				rkdto.setLeague_id(5);
+				System.out.println(rkdto.getLeague_team_id()+"2팀");
+				ldao.updateLeagueTable(rkdto);
+			}
+			else if(dto.getRes_team1goal()==dto.getRes_team2goal()) {
+				rkdto.setType("draw");
+				rkdto.setTeam_num(Integer.parseInt(dto.getHome_member_id()));
+				rkdto.setLeague_id(5);
+				ldao.updateLeagueTable(rkdto);
+				rkdto.setTeam_num(Integer.parseInt(dto.getAway_member_id()));
+				rkdto.setLeague_id(5);
+				ldao.updateLeagueTable(rkdto);
+			}
+			else if(dto.getRes_team1goal()<dto.getRes_team2goal()) {
+				rkdto.setType("lose");
+				rkdto.setTeam_num(Integer.parseInt(dto.getHome_member_id()));
+				rkdto.setLeague_id(5);
+				ldao.updateLeagueTable(rkdto);
+				rkdto.setType("win");
+				rkdto.setTeam_num(Integer.parseInt(dto.getAway_member_id()));
+				rkdto.setLeague_id(5);
+				ldao.updateLeagueTable(rkdto);
+			}
+		}
 		dao.updateMngRes(dto);
 	}
 	

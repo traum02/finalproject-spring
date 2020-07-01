@@ -22,7 +22,7 @@ public interface PlaceDaoInter {
 	public void addPlaceTime(String time_val,int place_id);
 	public void updatePlace(PlaceDto dto);
 	public void updateMngRes(ReservationDto dto);
-	
+	public List<Integer> getAllPlaceId();
 	
 	
 	public TeamDto getTeamInfo(int team_num);

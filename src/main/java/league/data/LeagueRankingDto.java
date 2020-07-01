@@ -9,7 +9,16 @@ public class LeagueRankingDto {
 	private int team_draw;
 	private int team_lose;
 	private int team_score;
+	private String type;
 	
+	
+	
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 	public int getTeam_score() {
 		return team_score;
 	}

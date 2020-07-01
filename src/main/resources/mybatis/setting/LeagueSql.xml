@@ -24,4 +24,43 @@
 	<insert id="joinLeague" parameterType="rankdto">
 		insert into league_team (league_team_name,team_num,league_id) values (#{league_team_name},#{team_num},#{league_id})
 	</insert>
+	<select id="getTimeId" parameterType="String" resultType="int">
+		select time_id from place_time where place_id=#{place_id} and time_val='1517'
+	</select>
+	<update id="updateLeague" parameterType="rankdto">
+		update league_round set league_team1goal=#{league_team1goal},league_team2goal=#{league_team2goal},round_status='Y' where (league_team1=#{league_team1} and league_team2=#{league_team2})
+	</update>
+	
+	<update id="updateLeagueTable" parameterType="rankdto">
+		update league_team set  
+		<if test="type.equals('win')">
+		team_win=team_win+1
+		</if>
+		<if test="type.equals('draw')">
+		team_draw=team_draw+1
+		</if>
+		<if test="type.equals('lose')">
+		team_lose=team_lose+1
+		</if>
+		 where team_num=#{team_num} and league_id=5
+	</update>
+	
+	
+	<select id="countHomeWin" parameterType="int" resultType="int">
+		select count(*) from league_round where league_team1=#{team_num} and league_team1goal>league_team2goal and round_status='Y'
+	</select>
+	<select id="countAwayWin" parameterType="int" resultType="int">
+		select count(*) from league_round where league_team2=#{team_num} and league_team2goal>league_team1goal and round_status='Y'
+	</select>
+	<select id="countDraw" parameterType="int" resultType="int">
+		select count(*) from league_round where (league_team1=#{team_num} or league_team2=#{team_num}) and league_team1goal=league_team2goal and round_status='Y'
+	</select>
+	<select id="countHomeLose" parameterType="int" resultType="int">
+		select count(*) from league_round where league_team1=#{team_num} and league_team2goal>league_team1goal and round_status='Y'
+	</select>
+	<select id="countAwayLose" parameterType="int" resultType="int">
+		select count(*) from league_round where league_team2=#{team_num} and league_team1goal>league_team2goal and round_status='Y'
+	</select>
+	
+	
 </mapper>

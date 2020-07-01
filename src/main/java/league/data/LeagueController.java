@@ -13,12 +13,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import place.data.PlaceDaoInter;
+import place.data.ReservationDto;
+
 @RestController
 @CrossOrigin
 public class LeagueController {
 
 	@Autowired
 	private LeagueDaoInter dao;
+	@Autowired
+	private PlaceDaoInter pdao;
 	
 	@GetMapping("/leagueRanking")
 	public List<LeagueRankingDto> getDatas(@RequestParam(defaultValue = "5") int id){
@@ -94,6 +99,9 @@ public class LeagueController {
 			}
 		}
 		
+		ReservationDto resdto=new ReservationDto();
+		
+		
         Calendar cal = Calendar.getInstance();
         cal.set(2020, 5, 28);//2020년 6월 28일
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -104,11 +112,15 @@ public class LeagueController {
 		String team1,team2;
 		rdto.setLeague_id(dao.getLeagueMaxId());
 		
+		List<Integer> place_id=pdao.getAllPlaceId();
+		System.out.println(place_id.get((int)(Math.random()*place_id.size())));
+		
 		for(String s:planList) {
 			roundCnt=s.substring(6,7);
 			teams=s.substring(8).split("/");
 			System.out.println("----------");
 			for(String a:teams) {
+				String placeid=place_id.get((int)(Math.random()*place_id.size())).toString();
 				System.out.println(roundCnt+"round");
 				team1=a.substring(0,a.indexOf("vs"));
 				team2=a.substring(a.indexOf("vs")+2);
@@ -121,6 +133,21 @@ public class LeagueController {
 
 				rdto.setRound_date(strDate);
 				System.out.println(strDate);
+				//res table에 insert
+				
+				resdto.setHome_member_id(team1);
+				resdto.setAway_member_id(team2);
+				resdto.setPlace_id(placeid);//장소
+				resdto.setRes_type("1");
+				resdto.setRes_team1("1");
+				resdto.setRes_team2("1");
+				resdto.setRes_time(strDate);
+				resdto.setTime_id(dao.getTimeId(placeid));//시간
+				resdto.setRes_etc("2");
+				
+				pdao.addRes(resdto);
+				
+				
 				dao.makePlan(rdto);
 			}
 			
@@ -128,6 +155,5 @@ public class LeagueController {
 			System.out.println("after: " + df.format(cal.getTime()));
 		}
 		System.out.println("==================");
-
 	}
 }

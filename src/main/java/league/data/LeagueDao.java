@@ -54,5 +54,22 @@ public class LeagueDao extends SqlSessionDaoSupport implements LeagueDaoInter {
 
 		return getSqlSession().selectOne("getLeagueName",pageNum);
 	}
-
+	
+	@Override
+	public int getTimeId(String place_id) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne("getTimeId",place_id);
+	}
+	
+	@Override
+	public void updateLeague(LeagueRoundDto dto) {
+		// TODO Auto-generated method stub
+		getSqlSession().update("updateLeague", dto);
+	}
+	
+	@Override
+	public void updateLeagueTable(LeagueRankingDto dto) {
+		// TODO Auto-generated method stub
+		getSqlSession().update("updateLeagueTable",dto);
+	}
 }

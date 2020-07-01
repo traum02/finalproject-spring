@@ -80,7 +80,7 @@ public class PlaceDao extends SqlSessionDaoSupport implements PlaceDaoInter{
 		map.put("fromDate",fromDate);
 		map.put("untilDate",untilDate);
 		map.put("res_status",resStatus);
-		return getSqlSession().selectList("getMyPrivateRes",map);
+		return getSqlSession().selectList("getMyRes",map);
 	}
 	
 	@Override
@@ -93,7 +93,7 @@ public class PlaceDao extends SqlSessionDaoSupport implements PlaceDaoInter{
 		map.put("fromDate",fromDate);
 		map.put("untilDate",untilDate);
 		map.put("res_status",resStatus);
-		return getSqlSession().selectOne("getTotalOfMyRes",map);
+		return getSqlSession().selectOne("getTotalMyRes",map);
 	}
 
 	@Override
@@ -173,6 +173,14 @@ public class PlaceDao extends SqlSessionDaoSupport implements PlaceDaoInter{
 
 		return getSqlSession().selectOne("getTotalForStandby",map);
 	}
+	
+	@Override
+	public List<Integer> getAllPlaceId() {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectList("getAllplaceid");
+	}
+	
+	
 	
 	@Override
 	public TeamDto getTeamInfo(int team_num) {

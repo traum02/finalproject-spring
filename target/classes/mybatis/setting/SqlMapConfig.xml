@@ -10,15 +10,29 @@
 		<typeAlias type="league.data.LeagueDto" alias="leaguedto"/>
 		<typeAlias type="spring.project.work.MemberDto" alias="mdto"/>
 		<typeAlias type="spring.project.work.IboardDto" alias="ibdto"/>
+		<typeAlias type="point.data.PointDto" alias="podto"/>
+		<typeAlias type="spring.project.work.IcommentDto" alias="icdto"/>
+		<typeAlias type="team.data.TboardDto" alias="tbdto" />
+		<typeAlias type="team.data.TeamDto" alias="tdto" />
+		<typeAlias type="team.data.TCommentDto" alias="tcdto" />
+		<typeAlias type="team.data.TeamMemberDto" alias="tmdto" />
+	
 		
-		
-		<typeAlias type="place.data.TeamDto" alias="teamdto"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mybatis/setting/PlaceSql.xml"/>
 		<mapper resource="mybatis/setting/LeagueSql.xml"/>
 		<mapper resource="mybatis/setting/MemberSql.xml"/>
 		<mapper resource="mybatis/setting/IboardSql.xml"/>
+		<mapper resource="mybatis/setting/PointSql.xml"/>
+		<mapper resource="mybatis/setting/ICommentSql.xml"/>
+		
+		<mapper resource="mybatis/setting/TboardSql.xml" />
+		<mapper resource="mybatis/setting/TeamSql.xml" />
+		<mapper resource="mybatis/setting/TCommentSql.xml" />
+		<mapper resource="mybatis/setting/TeamMemberSql.xml" />
+		<mapper resource="mybatis/setting/MatchHistorySql.xml"/>
+		
 	</mappers>
 	
 </configuration>

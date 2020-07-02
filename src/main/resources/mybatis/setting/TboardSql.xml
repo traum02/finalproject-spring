@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tboard">
+
+<!-- 게시판 전체 출력 -->
+	<select id="selectAllOfTboard" resultType="tbdto" parameterType="int">
+		select * from tboard order by field(tboard_notice,'notice') desc, tboard_num asc limit #{start},10
+	</select>
+	<!-- 팀 게시판 전체 출력 -->
+	<select id="selectTeamOfTboard" resultType="tbdto" parameterType="HashMap">
+		select * from tboard where tboard_public=#{tboard_public} order by field(tboard_notice,'notice') desc, tboard_num asc limit #{start},10
+	</select>
+	
+	<!-- 팀 게시판 검색 -->
+	<select id="searchOfTbaord" resultType="tbdto" parameterType="HashMap">
+		select * from tboard where ${option} like concat('%', #{keyword}, '%') limit #{start},10
+	</select>
+	
+	<!-- 게시판 전체 갯수 -->
+	<select id="totalCountOfTboard" resultType="int">
+		select count(*) from tboard
+	</select>
+	
+	<!-- 팀 게시판 전체 갯수 -->
+	<select id="totalCountOfTT" resultType="int" parameterType="String">
+	select count(*) from tboard where tboard_public=#{tboard_public}
+	
+	</select>
+	
+	<!-- 팀 게시판 검색 전체 갯수 -->
+	<select id="totalCountOfTboardSearch" resultType="int" parameterType="HashMap">
+		select count(*) from tboard where ${option} like concat('%', #{keyword}, '%')
+	</select>
+	
+	<!-- 게시물 추가 -->
+	<insert id="insertOfTboard" parameterType="tbdto">
+		insert into tboard(member_id,tboard_title,tboard_content,tboard_date,tboard_viewcount,tboard_photo,tboard_public,tboard_notice)
+		values(#{member_id},#{tboard_title},#{tboard_content},now(),#{tboard_viewcount},#{tboard_photo},#{tboard_public},#{tboard_notice})
+	</insert>
+	
+	<!-- 게시물 삭제 -->
+	<delete id="deleteOfTboard" parameterType="int">
+	   delete from tboard where tboard_num=#{tboard_num}
+	</delete>
+	
+	<!-- 조회수 증가 -->
+	<update id="updateViewCountOfTboard" parameterType="int">
+		update tboard set tboard_viewcount=tboard_viewcount+1 where tboard_num=#{tboard_num}
+	</update>
+	
+	<!-- 디테일 -->
+	<select id="selectOneOfTboard" parameterType="int" resultType="tbdto">
+		select * from tboard where tboard_num=#{tboard_num}
+	</select>
+	
+	<!-- 게시물 수정 -->
+	<update id="updateOfTboard" parameterType="tbdto">
+		update tboard set tboard_title=#{tboard_title},tboard_content=#{tboard_content},tboard_photo=#{tboard_photo}
+		where tboard_num=#{tboard_num}
+	</update>
+</mapper>

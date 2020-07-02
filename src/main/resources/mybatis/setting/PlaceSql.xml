@@ -67,7 +67,7 @@
 	
 	
 	
-	<select id="getTeamInfo" parameterType="int" resultType="teamdto">
+	<select id="getInfoOfTeam" parameterType="int" resultType="tdto">
 		select * from team where team_num=#{team_num}
 	</select>
 	

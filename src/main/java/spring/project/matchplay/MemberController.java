@@ -21,18 +21,31 @@ public class MemberController {
 	@Autowired
 	private MemberDaoInter dao;
 	
-	//추가
+	
 	@GetMapping("/memberdata")
-	public MemberDto getData(String id) {
+	public MemberDto getDate(String id) {
 		return dao.getMemberData(id);
 	}
-	
 	@GetMapping("/usepoint")
 	public void usePoint(@RequestParam String id, String usingPoint) {
 		System.out.println("id"+id);
 		System.out.println("usingPoint"+usingPoint);
 		dao.usePoint(id, usingPoint);
 	}
+	
+
+	@GetMapping("member/setint")
+	public void setint(@RequestParam int team_int,String name)
+	{
+		dao.setTeamint(team_int,name);
+	}
+	
+	@GetMapping("member/createsetint")
+	public void createsetint(@RequestParam int team_int,String id)
+	{
+		dao.creatorsetTeamint(team_int, id);
+	}
+
 	
 	@GetMapping("/member/list")
 	public List<MemberDto> list()
@@ -65,7 +78,7 @@ public class MemberController {
 	}
 	
 	
-	@RequestMapping(value = "/member/delete", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/mypage/delete", method = RequestMethod.DELETE)
 	public void delete(@RequestParam String id)
 	{
 		System.out.println("react>>delete");
@@ -158,5 +171,30 @@ public class MemberController {
 		return dao.getGrade(id);
 	} 
 	
+   //update member
+   @PostMapping("/mypage/updmem")
+   public void updmem(@RequestBody MemberDto dto)
+   {
+      dao.updateMember(dto);
+   }
+
+
+	//update password
+	@GetMapping("/mypage/updpwd")
+	public void updPwd(@RequestParam String pwd,
+			@RequestParam String id)
+	{
+		System.out.println("react>>mypage>>updPwd");
+		dao.updatePassword(pwd,id);
+	}
 	
+	//select member
+		@PostMapping("/mypage/selectmember")
+		public MemberDto selectmember(@RequestParam String id) 
+		{
+			System.out.println("react>>mypage>>selectmember");
+			return dao.getMemberData(id);
+
+		}
+
 }

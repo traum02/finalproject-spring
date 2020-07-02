@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="team">
+
+	<!-- 팀 리스트 -->
+	<select id="selectAllOfTeam" resultType="tdto">
+		select * from team order by team_num asc limit #{start},10
+	</select>
+	
+	<!-- 팀 이름 중복체크 -->
+	<select id="checkOfTeamName" parameterType="String" resultType="int">
+		select count(*) from team where team_name=#{team_name} 
+	</select>
+		
+	<!-- 팀 만들기 -->
+	<insert id ="insertOfTeam" parameterType="tdto">
+		insert into team(team_name,team_area,team_date,team_photo,team_age,team_intro,creator)
+		values(#{team_name},#{team_area},now(),#{team_photo},#{team_age},#{team_intro},#{creator})
+	</insert>
+	
+	<!-- 팀 삭제 -->
+	<delete id="deleteOfTeam" parameterType="int">
+		delete from team where team_num=#{team_num}
+	</delete>
+	
+	<!-- 팀 소개글 수정 -->
+	<update id="updateOfTeamIntro" parameterType="tdto">
+		update team set team_intro=#{team_intro} where team_num=#{team_num}
+	</update>
+	
+	<!-- 팀 로고 수정 -->
+	<update id="updateOfLogo" parameterType="tdto">
+		update team set team_photo=#{team_photo} where team_num=#{team_num}
+	</update>
+	
+	<!-- 특정 팀 선택 -->
+	<select id="selectOneTeam" parameterType="int" resultType="tdto">
+		select * from team where team_num=#{team_num}
+	</select>
+	
+	<!-- 팀 검색 -->
+	<select id="searchOfTeam" resultType="tdto" parameterType="HashMap">
+		select * from TEAM where TEAM_NAME like concat('%', #{keyword}, '%') limit #{start},10
+	</select>
+	
+	<!-- 전체 팀 갯수 -->
+	<select id="totalCountTeam" resultType="int">
+		select count(*) from team
+	</select>
+	
+	<!-- 창단자의 이름을 통해 team_num 구하기-->
+	<select id="CreatorTeamNum" resultType="int" parameterType="String">
+		select team_num from TEAM where creator=#{creator}
+	</select>
+	
+	<!-- 팀 넘버를 받아서 팀 이름 찾기 -->
+	<select id="getTeamName" resultType="String" parameterType="String">
+		select team_name from TEAM where team_num=#{team_num}
+	</select>
+	
+	<!-- 결과 카운트 -->
+	<select id="teamWinHome" resultType="int" parameterType="int">
+		select count(*) from RESERVATION where HOME_MEMBER_ID = #{team_num} and RES_TEAM1GOAL>RES_TEAM2GOAL
+	</select>
+	<select id="teamLoseHome" resultType="int" parameterType="int">
+		select count(*) from RESERVATION where HOME_MEMBER_ID = #{team_num} and RES_TEAM2GOAL>RES_TEAM1GOAL
+	</select>
+	<select id="teamWinAway" resultType="int" parameterType="int">
+		select count(*) from RESERVATION where AWAY_MEMBER_ID = #{team_num} and RES_TEAM1GOAL>RES_TEAM2GOAL
+	</select>
+	<select id="teamLoseAway" resultType="int" parameterType="int">
+		select count(*) from RESERVATION where AWAY_MEMBER_ID = #{team_num} and RES_TEAM2GOAL>RES_TEAM1GOAL
+	</select>	
+	<select id="teamDraw" resultType="int" parameterType="int">
+		select count(*) from RESERVATION where (HOME_MEMBER_ID = #{team_num} or AWAY_MEMBER_ID = #{team_num}) and RES_TEAM2GOAL=RES_TEAM1GOAL
+	</select>	
+</mapper>
+

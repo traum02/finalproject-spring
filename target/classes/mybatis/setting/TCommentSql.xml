@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tcomment">
+	<insert id="insertOfTcomment" parameterType="tcdto">
+		insert into TCOMMENT (TBOARD_NUM,MEMBER_ID,TCOMMENT_CONTENT,TCOMMENT_DATE)
+		values(#{tboard_num},#{member_id},#{tcomment_content},now())
+	</insert>
+	
+	<!-- member와 조인하여 member_id 와 tboard_num이 같은 것을 구함 -->
+	<select id="selectListOfTcomment" parameterType="int" resultType="tcdto">
+		select * from TCOMMENT where TBOARD_NUM=#{tboard_num}
+	</select>
+	
+	<delete id="deleteOfTcomment" parameterType="int">
+		delete from TCOMMENT where TCOMMENT_NUM=#{tcomment_num}
+	</delete>
+	
+	<select id="TotalCountComment" parameterType="int" resultType="int">
+		select count(*) from TCOMMENT where TBOARD_NUM=#{tboard_num}
+	</select>
+	
+	
+</mapper>

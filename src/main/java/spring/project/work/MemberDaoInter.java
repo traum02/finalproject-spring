@@ -29,8 +29,12 @@ public interface MemberDaoInter {
 	
 	
 	public int getGrade(String id);
-	
+   public void updateMember(MemberDto dto);
+	public void updatePassword(String pwd,String id);
 	public MemberDto getMemberData(String id);
 	public void usePoint(String id,String usingPoint);
+
+	public int setTeamint(int team_int,String name);
+	public int creatorsetTeamint(int team_int,String id);	
 	
 }

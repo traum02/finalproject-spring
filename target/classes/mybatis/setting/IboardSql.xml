@@ -9,14 +9,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<select id="selectAllOfIboard" resultType="ibdto" parameterType="int">
-		select * from iboard order by field(iboard_notice,'notice') desc, iboard_num asc limit #{start},10
+		select * from iboard order by field(iboard_notice,'notice') desc, iboard_num desc limit #{start},10
 	</select>
+	
+	
 	<select id="searchOfIbaord" resultType="ibdto" parameterType="HashMap">
-		select * from iboard where ${option} like concat('%', #{keyword}, '%') limit #{start},10
+		select * from iboard where ${option} like concat('%', #{keyword}, '%') order by field(iboard_notice,'notice') desc, iboard_num desc limit #{start},10
+		<!-- select * from tboard where ${option} like concat('%', #{keyword}, '%') limit #{start},10 -->
 	</select>
-	<select id="totalCountOfIboard" resultType="int">
-		select count(*) from iboard
-	</select>
+	
 	<select id="totalCountOfIboardSearch" resultType="int" parameterType="HashMap">
 		select count(*) from iboard where ${option} like concat('%', #{keyword}, '%')
 	</select>
@@ -28,6 +29,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</delete>
 	<select id="iboardSelectOneOfPwd" parameterType="HashMap" resultType="int">
 		select count(*) from iboard where iboard_num=#{iboard_num} and iboard_secpwd=#{iboard_secpwd}
+	</select>
+	
+	<update id="updateOfIboard" parameterType="ibdto">
+		update iboard set iboard_title=#{iboard_title},iboard_content=#{iboard_content} where iboard_num=#{iboard_num}
+	</update>
+	
+	<select id="totalCountOfIboard" resultType="int">
+		select count(*) from iboard
 	</select>
 	
 	

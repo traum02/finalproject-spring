@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="teammember">
+
+<!-- 구성원 리스트 -->
+	<select id="selectAllOfTeamMember" resultType="HashMap" parameterType="HashMap">
+		select t.*,m.name,m.gender,m.addr from member m join team_member t on m.id=t.member_id 
+		where t.team_num=#{team_num} and t.team_member_grade not in ('no')
+        order by field(TEAM_MEMBER_GRADE,
+		'submaster','master') desc, TEAM_MEMBER_NUM asc limit #{start},5
+	</select>
+	
+<!-- 가입 대기자 리스트 -->
+	<select id="selectAllApply" resultType="HashMap" parameterType="HashMap">
+		select t.*,m.name,m.gender,m.addr from member m join team_member t on m.id=t.member_id 
+		where t.team_num=#{team_num} and t.team_member_grade='no'
+        order by field(TEAM_MEMBER_GRADE,
+		'submaster','master') desc, TEAM_MEMBER_NUM asc limit #{start},5
+	</select>	
+
+	
+<!-- 가입 신청. member_id는 현 접속자,-->
+	<insert id="joinOfTeamMember" parameterType="tmdto">
+		insert into TEAM_MEMBER(MEMBER_ID,TEAM_NUM,TEAM_MEMBER_GRADE,TEAM_MEMBER_DATE)
+		values(#{member_id},#{team_num},'no',now())
+	</insert>	
+<!-- 팀 만든 사람 팀장 권한 주기 -->	
+	<insert id="CreateMaster" parameterType="HashMap">
+		insert into TEAM_MEMBER(MEMBER_ID,TEAM_NUM,TEAM_MEMBER_GRADE,TEAM_MEMBER_DATE)
+		values(#{member_id},#{team_num},'master',now())
+	</insert>
+<!-- 제명 시키기 -->
+	<delete id="outOfTeamMember" parameterType="int">
+		delete from TEAM_MEMBER where TEAM_MEMBER_NUM=#{team_member_num}
+	</delete>
+
+<!-- 권한 주기 및 가입 승인  -->
+	<update id="gradeOfTeamMember" parameterType="tmdto">
+		update TEAM_MEMBER set TEAM_MEMBER_GRADE=#{team_member_grade} where team_member_num=#{team_member_num}
+	</update>
+<!-- 팀장 양도 시 팀장 권한 내리기 -->	
+	<update id="ChangeTeamMaster" parameterType="String">
+			update TEAM_MEMBER set TEAM_MEMBER_GRADE='member' where member_id=#{beforemaster}
+	
+	</update>
+	
+	
+<!-- 멤버 수  -->	
+	<select id="totalOfTeamMember" resultType="int" parameterType="int">
+		select count(*) from TEAM_MEMBER where TEAM_NUM=#{team_num} and team_member_grade not in ('no')
+	</select>
+	<!-- 팀장 이름-->
+	<select id="selectOfMaster" resultType="tmdto" parameterType="int">
+		select * from TEAM_MEMBER where TEAM_MEMBER_GRADE='master' and team_num=#{team_num}
+	</select>
+<!-- 멤버 검색 -->
+	<select id="searchOfTeamMember" resultType="HashMap" parameterType="HashMap">
+		<!--select * from TEAM_MEMBER where ${option} like concat('%', #{keyword}, '%') limit #{start},3-->
+		select t.*,m.name,m.gender,m.addr from team_member t join member m on m.id=t.member_id
+where ${option} like concat('%', #{keyword}, '%') limit 0,5
+	</select>
+	<!-- 검색 전체 갯수 -->
+	<select id="totalSearch" resultType="int" parameterType="HashMap">
+		select count(*) from TEAM_MEMBER where ${option} like concat('%', #{keyword}, '%') limit 0,5
+	</select>
+	
+	
+	<!-- 자기가 소속된 팀 넘버 찾기 -->
+	<select id="myTeamNumber" resultType="int" parameterType="String">
+    select t.team_num from TEAM_MEMBER t join MEMBER m on t.member_id = m.id
+    where t.team_num and t.member_id=#{member_id}
+	</select>
+	
+	<!-- 현재 접속자 권한이 팀장인지 아닌지 찾기 -->
+	<select id="BeforeTeamMaster" resultType="String" parameterType="String">
+	select team_member_grade from TEAM_MEMBER where member_id = #{member_id}
+	</select>
+	
+	
+	
+
+	
+	
+</mapper>

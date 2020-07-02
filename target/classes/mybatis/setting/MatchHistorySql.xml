@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="history">
+
+<select id="getMyPrivateRes" parameterType="HashMap" resultType="resdto">
+		select r.*,p.place_name,p.place_addr,p.place_max,pt.time_val from reservation r join place p on r.place_id=p.place_id and r.res_team1+r.res_team2!=p.place_max join place_time pt on r.time_id=pt.time_id where (home_member_id = #{team_id} or away_member_id = #{team_id}) and res_type!=0  and res_time between #{fromDate} and #{untilDate}  and res_status='Y' order by res_time desc,time_val asc limit #{pageNum},10
+	</select>
+	<select id="getTotalOfMyRes" parameterType="HashMap" resultType="int">
+		select count(*) from reservation r join place p on r.place_id=p.place_id and r.res_team1+r.res_team2!=p.place_max join place_time pt on r.time_id=pt.time_id where (((home_member_id = #{team_id} or away_member_id = #{team_id}) and res_type!=0 )) and res_time between #{fromDate} and #{untilDate} and res_status='Y'
+	</select>
+	<select id="getTeamInfo" parameterType="int" resultType="tdto">
+		select * from team where team_num=#{team_num}
+	</select>
+	<!-- 달력용 -->
+<select id="getMyPrivateRes1" parameterType="HashMap" resultType="resdto">
+		select r.*,p.place_name,p.place_addr,p.place_max,pt.time_val from reservation r join place p on r.place_id=p.place_id and r.res_team1+r.res_team2!=p.place_max join place_time pt on r.time_id=pt.time_id where (home_member_id = #{team_id} or away_member_id = #{team_id}) and res_type!=0  and res_time between #{fromDate} and #{untilDate} order by res_time desc,time_val asc limit #{pageNum},10
+	</select>
+	
+	<!-- 내 팀의 일정 다 불러오기 (달력용) -->
+	<select id="myTeamRes" parameterType="int" resultType="resdto">
+		select * from RESERVATION where (((home_member_id = #{team_num} or away_member_id = #{team_num}) and res_type!=0 )) 
+	</select>
+</mapper>
+
+

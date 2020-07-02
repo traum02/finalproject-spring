@@ -126,9 +126,8 @@ public class MemberDao extends SqlSessionDaoSupport implements MemberDaoInter{
 	@Override
 	public MemberDto getMemberData(String id) {
 		// TODO Auto-generated method stub
-		return getSqlSession().selectOne("getMemberData", id);
+		return getSqlSession().selectOne("getMemberOfData", id);
 	}
-
 
 
 	@Override
@@ -139,7 +138,44 @@ public class MemberDao extends SqlSessionDaoSupport implements MemberDaoInter{
 		map.put("usingPoint", usingPoint);
 		getSqlSession().update("usePointOfMember",map);
 	}
+
+
+
+	@Override
+	public void updateMember(MemberDto dto) {
+		getSqlSession().update("updateOfMember", dto);
+	}
+
+
+
+	@Override
+	public void updatePassword(String pwd, String id) {
+		// TODO Auto-generated method stub
+		HashMap<String, String> map=new HashMap<String, String>();
+		map.put("pwd", pwd);
+		map.put("id", id);
+		getSqlSession().update("updateOfPassword", map);
+	}
 	
-	
-	
+	@Override
+	public int setTeamint(int team_int,String name) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("team_int",team_int);
+		map.put("name",name);
+		return getSqlSession().update("setTeamInt",map);
+	}
+
+
+
+	@Override
+	public int creatorsetTeamint(int team_int, String id) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("team_int",team_int);
+		map.put("id",id);
+		return getSqlSession().update("CreatorsetTeamInt",map);
+		
+	}	
+
 }

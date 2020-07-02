@@ -7,21 +7,33 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 
 
+
 @Repository
 public class IboardDao extends SqlSessionDaoSupport implements IboardDaoInter {
 
 	
 
 	@Override
-	public List<IboardDto> getAllDatas(int start) {
+	public int getTotalCount() {
 		// TODO Auto-generated method stub
-		return getSqlSession().selectList("selectAllOfIboard",start);
+		return getSqlSession().selectOne("totalCountOfIboard");
 	}
 	
 	@Override
-	public IboardDto getData(int iboard_num) {
+	public IboardDto getData(int iboard_num, int preidx) {
+		
+		IboardDto res = getSqlSession().selectOne("selectOneOfIboard", iboard_num);
+		res.setPreidx(preidx);
+		
+		return res;
+	}
+	
+	
+	@Override
+	public IboardDto getData1(int iboard_num) {
 		// TODO Auto-generated method stub
-		return getSqlSession().selectOne("selectOneOfIboard",iboard_num);
+		IboardDto dto=getSqlSession().selectOne("selectOneOfIboard", iboard_num);
+		return dto;
 	}
 
 	@Override
@@ -52,9 +64,27 @@ public class IboardDao extends SqlSessionDaoSupport implements IboardDaoInter {
 	}
 	
 	@Override
+	public List<IboardDto> getAllDatas(int start, int preidx) {
+		// TODO Auto-generated method stub
+		List<IboardDto> res = getSqlSession().selectList("selectAllOfIboard", start);
+		for (IboardDto dto : res) {
+			dto.setPreidx(start);
+		}
+		return res;
+	}
+	
+
+	@Override
 	public void insertIboard(IboardDto dto) {
 		// TODO Auto-generated method stub
 		getSqlSession().insert("insertOfIboard", dto);
 	}
+
+	@Override
+	public void updateIboard(IboardDto dto) {
+		// TODO Auto-generated method stub
+		getSqlSession().update("updateOfIboard", dto);
+	}
+	
 	
 }

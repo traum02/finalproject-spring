@@ -18,8 +18,21 @@ public class IboardDto {
 	private int iboard_sec;
 	private String iboard_secpwd;
 	private String iboard_notice;
+	private int totalCount;
+	private int preidx;
 	
-	
+	public int getPreidx() {
+		return preidx;
+	}
+	public void setPreidx(int preidx) {
+		this.preidx = preidx;
+	}
+	public int getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(int totalCount) {
+		this.totalCount = totalCount;
+	}
 	public int getIboard_num() {
 		return iboard_num;
 	}

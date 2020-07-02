@@ -33,6 +33,7 @@ import league.data.LeagueDaoInter;
 import league.data.LeagueRankingDto;
 import league.data.LeagueRoundDto;
 import spring.project.work.MemberDaoInter;
+import team.data.TeamDto;
 
 @RestController
 @CrossOrigin
@@ -304,7 +305,7 @@ public class PlaceController {
 
 	}
 	
-	@GetMapping(value="/getWeather2", produces="text/plain;charset=UTF-8")
+	@GetMapping(value="/getWeather2", produces="text/plain;charset=euc-kr")
 	public String getWeather2() {
 //		String apiUrl = "http://apis.data.go.kr/1360000/VilageFcstInfoService/getUltraSrtNcst";//초단기실황
 //		String apiUrl="http://apis.data.go.kr/1360000/VilageFcstInfoService/getUltraSrtFcst";//초단기예보
@@ -365,9 +366,9 @@ public class PlaceController {
 //        System.out.println("Response code: " + conn.getResponseCode());
         BufferedReader rd;
         if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
-            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            rd = new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));
         } else {
-            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream(),"UTF-8"));
         }
         StringBuilder sb = new StringBuilder();
         String line;
@@ -472,7 +473,7 @@ public class PlaceController {
 			writeFile(uploadFile[i], path);
 		}
 		oriFileName=oriFileName.substring(0,oriFileName.lastIndexOf("/"));
-		
+		System.out.println(oriFileName);
 		return oriFileName;
 	}
 	

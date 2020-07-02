@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="icomment">
+	<insert id="insertOfIcomment" parameterType="icdto">
+		insert into ICOMMENT (MEMBER_ID,iboard_num,ICOMMENT_CONTENT,ICOMMENT_DATE)
+		values(#{member_id},#{iboard_num},#{icomment_content},now())
+	</insert>
+	
+	<!-- member와 조인하여 member_id 와 tboard_num이 같은 것을 구함 -->
+	<select id="selectListOfIcomment" parameterType="int" resultType="icdto">
+		select * from ICOMMENT where IBOARD_NUM=#{iboard_num}
+	</select>
+	
+	<delete id="deleteOfIcomment" parameterType="int">
+		delete from ICOMMENT where ICOMMENT_NUM=#{icomment_num}
+	</delete>
+</mapper>

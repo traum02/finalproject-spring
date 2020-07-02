@@ -5,7 +5,8 @@ import java.util.List;
 
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestParam;
+
+import team.data.TeamDto;
 
 @Repository
 public class PlaceDao extends SqlSessionDaoSupport implements PlaceDaoInter{
@@ -185,6 +186,7 @@ public class PlaceDao extends SqlSessionDaoSupport implements PlaceDaoInter{
 	@Override
 	public TeamDto getTeamInfo(int team_num) {
 		// TODO Auto-generated method stub
-		return getSqlSession().selectOne("getTeamInfo", team_num);
+		System.out.println("asdaaaa");
+		return getSqlSession().selectOne("getInfoOfTeam", team_num);
 	}
 }
